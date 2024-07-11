@@ -1,0 +1,28 @@
+https://files.ettus.com/manual/page_identification.html
+https://files.ettus.com/manual/page_usrp_x3x0.html#x3x0_setup_change_ip
+https://files.ettus.com/manual/page_usrp_x3x0_config.html#x3x0cfg_hostpc_netcfg_ip
+
+########################
+#to connect to a device#
+########################
+
+sudo ifconfig enp1s0f0 up
+sudo ip addr add 192.168.40.1/24 dev enp1s0f0
+sudo ifconfig enp1s0f0 mtu 9000
+ifconfig -a #addr should have changed
+uhd_find_devices
+
+#########################
+#to configure the USRP !#
+#########################
+
+#put FPGA image inside the USRP for the 10Gbit interface
+uhd_image_loader --args="type=x300,addr=192.168.40.2,fpga=XG" 
+
+#make a power cycle (redémarrer USRP)
+
+# 
+/usr/lib/uhd/utils/usrp_burn_mb_eeprom --args="addr=192.168.40.2" --values="ip-addr3=192.168.60.11,name=martin"
+
+
+#make a power cycle (redémarrer USRP)

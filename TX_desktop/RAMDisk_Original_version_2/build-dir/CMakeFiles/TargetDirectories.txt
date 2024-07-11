@@ -1,0 +1,4 @@
+/export/home/usrpconfig/Desktop/RAMDisk_Original_version_2/build-dir/CMakeFiles/adv_rx_to_file.dir
+/export/home/usrpconfig/Desktop/RAMDisk_Original_version_2/build-dir/CMakeFiles/tx_waveforms_radar.dir
+/export/home/usrpconfig/Desktop/RAMDisk_Original_version_2/build-dir/CMakeFiles/edit_cache.dir
+/export/home/usrpconfig/Desktop/RAMDisk_Original_version_2/build-dir/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,49 @@
+This step is done only once: Make the CMakeLists to generate the executables [you will place these executables inside the RAMDisk later on]
+Each time you power cycle the computer, you have to run the following commands for each Ethernet port
+	sudo ifconfig enp8s0f0 mtu 9000 [enp8sf0 is the port name, it will be different for your computer]
+	sudo ifconfig enp8s0f1 mtu 9000
+	sudo mount -t tmpfs -o size=8192m tmpfs /export/home/usrpconfig/Desktop/RAMDisk [you should manually create a folder called RAMDisk on desktop, and call this line on a terminal running on the desktop. This line will allocate a ram memory for Tx and Rx]
+
+You place the previously generated executables inside the RAMDisk as well as test_signal.txt file, which is the Tx signal that comes from MATLAB.
+You call the following line (with your modifications) to start Tx - wait until you see "Tx streaming" on the terminal, then proceed to the next s
+tep.
+
+./tx_waveforms_radar --args name=Pipkin --subdev "B:0" --ant "TX/RX" --rate 100e6 --freq 2.45e9 --sig_len 1088 --spb 10880 --file "test_signal.txt" --gain 30  --ref "external"
+
+	!!!Make sure that spb is an integer multiple of sig_len!!!
+
+You call the following line (with your modifications) to start Rx - Once X number of samples are recorded, you will see a .bin file in RAMDisk, cut/paste it to your MATLAB directory.
+
+./adv_rx_to_file --args "resource0=RIO0" --subdev "A:0" --rx_ant "TX/RX" --sync "external" --ref "external" --rate 100e6 --rx_freq 2.45e9 --rx_gain 30 --nsamps 245040 --file
+
+
+
+ ,
+name "testRx1" --rx_bw 160e6 --channels "0" --nbr_meas 1 --secs 0.5
+
+./adv_rx_to_file --args name=jerome --subdev "A:0" --rx_ant "TX/RX" --sync "external" --ref "external" --rate 200e6 --rx_freq 3.2e9 --rx_gain 30 --nsamps 8292000 --filename "Tests_Rapport_" --rx_bw 160e6 --channels "0" --nbr_meas 1 --secs 0.5
+
+./adv_rx_to_file --args "resource0=RIO0" --subdev "A:0" --rx_ant "TX/RX" --sync "external" --ref "external" --rate 200e6 --rx_freq 3.2e9 --rx_gain 30 --nsamps 8292000 --filename "CSB_Test" --rx_bw 160e6 --channels "0" --nbr_meas 1 --secs 0.5
+
+./adv_rx_to_file --args name=jerome --subdev "A:0" --rx_ant "TX/RX" --sync "external" --ref "external" --rate 200e6 --rx_freq 3.2e9 --rx_gain 30 --nsamps 8292000 --filename "WIFI_" --rx_bw 160e6 --channels "0" --nbr_meas 1 --secs 0.5
+
+./adv_rx_to_file --args name=jerome --subdev "A:0" --rx_ant "TX/RX" --sync "external" --ref "external" --rate 200e6 --rx_freq 3.2e9 --rx_gain 30 --nsamps 8292000 --channels "0" --nbr_meas 1 --secs 0.5 --filename "NoWifi_100_400_1"
+
+./adv_rx_to_file --args name=jerome --subdev "A:0" --rx_ant "TX/RX" --sync "external" --ref "external" --rate 200e6 --rx_freq 3.2e9 --rx_gain 30 --nsamps 20000000 --channels "0" --nbr_meas 1 --secs 0.5 --filename "Wifi_100_400_1"
+
+./adv_rx_to_file --args name=jerome --subdev "A:0" --rx_ant "TX/RX" --sync "external" --ref "external" --rate 200e6 --rx_freq 3.2e9 --rx_gain 30 --nsamps 19474560 --channels "0" --nbr_meas 1 --secs 0.5 --filename "WIFI_80_4m"
+
+
+
+./adv_rx_to_file --args name=jerome --subdev "A:0" --rx_ant "TX/RX" --sync "external" --ref "external" --rate 200e6 --rx_freq 3.2e9 --rx_gain 30 --nsamps 15000000 --filename "WIFI"  --channels "0" --nbr_meas 1 --secs 0.5
+
+
+./adv_rx_to_file --args name=jerome --subdev "A:0" --rx_ant "TX/RX" --sync "external" --ref "external" --rate 200e6 --rx_freq 3.2e9 --rx_gain 30 --nsamps 500000 --filename "CFOExp" --rx_bw 160e6 --channels "0" --nbr_meas 1 --secs 0.5
+
+nbr_meas: the number of consecutive measurements you want o make
+secs: the duration between those measurements
+----------
+
+convert.m - You run this inside matlab to convert and save a vector from MATLAB workspace to a .txt file. This will be your Tx signal. Normalization is handled by the conversion function.
+
+read_complex_binary.m - You use this inside MATLAB to read a .bin/.dat file (previously recorded from Rx) and retrieve the numbers in MATLAB workspace. This function does not save the file .bin file as .mat, you have to do it yourself.
